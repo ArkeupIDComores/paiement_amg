@@ -72,6 +72,9 @@ HOLO_ONLINE_ENDPOINT = os.environ.get('HOLO_ONLINE_ENDPOINT', '/online/online.ph
 HOLO_MERCHANT_ID = os.environ.get('HOLO_MERCHANT_ID', '2449462108576891')
 HOLO_CURRENCY = 174
 
+# Permettre d'imposer un mode manuel (pas d'auto-submit) pour les tests/recette
+HOLO_FORCE_MANUAL = os.environ.get('HOLO_FORCE_MANUAL', 'false').lower() in ('1', 'true', 'yes', 'on')
+
 CALLBACK_DOMAIN = os.environ.get('CALLBACK_DOMAIN', 'https://dev.amg.km')
 
 NOTIFY_URL = f"{CALLBACK_DOMAIN}/holo/notificationpaiement"

@@ -55,6 +55,7 @@ def initier_paiement(request):
     )
 
     # Call HOLO to get sessionid
+    session_error = ""
     try:
         holo_url = f"{settings.HOLO_BASE_URL}{settings.HOLO_ONLINE_ENDPOINT}?merchantid={settings.HOLO_MERCHANT_ID}"
         resp = requests.get(holo_url, timeout=10)
@@ -65,9 +66,11 @@ def initier_paiement(request):
             sessionid = session_raw[3:].strip()
         else:
             logger.error(f"HOLO session NOK: {session_raw}")
+            session_error = session_raw
             sessionid = ""
     except Exception as e:
         logger.error(f"Erreur session HOLO: {e}")
+        session_error = str(e)
         sessionid = ""
 
     payment.sessionid = sessionid
@@ -85,7 +88,8 @@ def initier_paiement(request):
         "acceptUrl": settings.ACCEPT_URL,
         "declineUrl": settings.DECLINE_URL,
         "cancelUrl": settings.CANCEL_URL,
-        "auto_submit": ("holourl" not in settings.HOLO_BASE_URL.lower()) and bool(sessionid),
+        "auto_submit": (not settings.HOLO_FORCE_MANUAL) and ("holourl" not in settings.HOLO_BASE_URL.lower()) and bool(sessionid),
+        "session_error": session_error,
     }
 
     return render(request, "payments/holo_auto_submit.html", form_ctx)
@@ -120,6 +124,7 @@ def api_initiate(request):
         status="initiating",
     )
 
+    session_error = ""
     try:
         holo_url = f"{settings.HOLO_BASE_URL}{settings.HOLO_ONLINE_ENDPOINT}?merchantid={settings.HOLO_MERCHANT_ID}"
         resp = requests.get(holo_url, timeout=10)
@@ -129,9 +134,11 @@ def api_initiate(request):
             sessionid = session_raw[3:].strip()
         else:
             logger.error(f"HOLO session NOK: {session_raw}")
+            session_error = session_raw
             sessionid = ""
     except Exception as e:
         logger.error(f"Erreur session HOLO: {e}")
+        session_error = str(e)
         sessionid = ""
 
     payment.sessionid = sessionid
@@ -155,6 +162,7 @@ def api_initiate(request):
         "merchantid": settings.HOLO_MERCHANT_ID,
         "purchaseref": purchaseref,
         "redirect_form_data": redirect_form_data,
+        "session_error": session_error,
     })
 
 

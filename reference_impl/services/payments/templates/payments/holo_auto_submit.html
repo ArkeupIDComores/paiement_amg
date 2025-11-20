@@ -4,6 +4,9 @@
 {% block content %}
   <div class="stack-12">
     <div class="status warn">Préparation de la transaction… vous allez être redirigé vers HOLO.</div>
+    {% if session_error %}
+      <div class="status error">Erreur de session HOLO: {{ session_error }}. Vérifiez l'activation du MerchantID, la whitelist IP et les URLs de retour.</div>
+    {% endif %}
     <form id="holoForm" method="post" action="{{ action_url }}">
     <input type="hidden" name="sessionid" value="{{ sessionid }}">
     <input type="hidden" name="merchantid" value="{{ merchantid }}">
@@ -15,8 +18,13 @@
     <input type="hidden" name="declineurl" value="{{ declineUrl }}">
     <input type="hidden" name="cancelurl" value="{{ cancelUrl }}">
     {% if not auto_submit %}
-    <div class="status error">HOLO_BASE_URL n’est pas configuré correctement (holourl). Définissez l’URL HOLO réelle dans les paramètres avant d’envoyer ce formulaire.</div>
-    <button class="btn btn-primary" type="submit">Envoyer vers HOLO (peut échouer si non configuré)</button>
+      {% if not sessionid %}
+        <div class="status error">Session HOLO absente. Impossible d’envoyer le formulaire. Contactez l’administrateur pour activer le marchand ou vérifier la connexion.</div>
+      {% endif %}
+      {% if "holourl" in action_url|lower %}
+        <div class="status error">HOLO_BASE_URL n’est pas configuré correctement (placeholder). Définissez l’URL HOLO réelle dans les paramètres.</div>
+      {% endif %}
+      <button class="btn btn-primary" type="submit" {% if not sessionid %}disabled aria-disabled="true"{% endif %}>Payer la cotisation</button>
     {% endif %}
   </form>
   {% if auto_submit %}
