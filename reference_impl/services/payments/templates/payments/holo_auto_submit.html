@@ -1,0 +1,28 @@
+{% extends 'payments/base.html' %}
+{% block title %}Redirection vers HOLO — AMG{% endblock %}
+{% block heading %}Préparation de la transaction{% endblock %}
+{% block content %}
+  <div class="stack-12">
+    <div class="status warn">Préparation de la transaction… vous allez être redirigé vers HOLO.</div>
+    <form id="holoForm" method="post" action="{{ action_url }}">
+    <input type="hidden" name="sessionid" value="{{ sessionid }}">
+    <input type="hidden" name="merchantid" value="{{ merchantid }}">
+    <input type="hidden" name="amount" value="{{ amount }}">
+    <input type="hidden" name="currency" value="{{ currency }}">
+    <input type="hidden" name="purchaseref" value="{{ purchaseref }}">
+    <input type="hidden" name="description" value="{{ description }}">
+    <input type="hidden" name="accepturl" value="{{ acceptUrl }}">
+    <input type="hidden" name="declineurl" value="{{ declineUrl }}">
+    <input type="hidden" name="cancelurl" value="{{ cancelUrl }}">
+    {% if not auto_submit %}
+    <div class="status error">HOLO_BASE_URL n’est pas configuré correctement (holourl). Définissez l’URL HOLO réelle dans les paramètres avant d’envoyer ce formulaire.</div>
+    <button class="btn btn-primary" type="submit">Envoyer vers HOLO (peut échouer si non configuré)</button>
+    {% endif %}
+  </form>
+  {% if auto_submit %}
+  <script>
+    document.getElementById('holoForm').submit();
+  </script>
+  {% endif %}
+  </div>
+{% endblock %}

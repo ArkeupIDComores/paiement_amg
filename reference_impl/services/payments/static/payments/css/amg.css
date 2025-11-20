@@ -1,0 +1,99 @@
+/* AMG Brand Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --amg-navy: #0a4f78;
+  --amg-dark: #083c5a;
+  --amg-teal: #2ddac7;
+  --amg-teal-700: #22b8a9;
+  --amg-teal-50: #e7fbf8;
+  --amg-bg: #0e2f4a;
+  --amg-text: #0b1e2d;
+  --amg-muted: #5b7790;
+  --amg-card: #ffffff;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--amg-text);
+  background: linear-gradient(150deg, var(--amg-bg) 0%, #0b4064 70%);
+}
+
+/* Header */
+.amg-header {
+  background: var(--amg-navy);
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.amg-header-inner {
+  max-width: 1080px; margin: 0 auto; padding: 16px 22px;
+  display: flex; align-items: center; gap: 18px;
+}
+.amg-logo-wrap { background: #ffffff; border-radius: 12px; padding: 6px; box-shadow: 0 6px 18px rgba(45,218,199,0.28); }
+.amg-logo-img { width: 56px; height: 56px; border-radius: 8px; object-fit: contain; display: block; }
+@media (max-width: 540px) { .amg-logo-img { width: 44px; height: 44px; } }
+.amg-brand {
+  display: flex; flex-direction: column; line-height: 1.1;
+}
+.amg-brand .title { font-weight: 700; letter-spacing: 0.2px; }
+.amg-brand .subtitle { font-weight: 500; opacity: 0.85; font-size: 0.92rem; }
+
+/* Layout */
+.container {
+  max-width: 1080px; margin: 0 auto; padding: 28px 20px;
+}
+.card {
+  background: var(--amg-card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 22px 60px rgba(8,60,90,0.35);
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+}
+.card-header h1 { font-size: 1.35rem; margin: 0; color: var(--amg-dark); }
+.accent {
+  height: 4px; background: linear-gradient(90deg, var(--amg-teal), var(--amg-teal-700));
+  border-radius: 999px; margin: 8px 0 18px;
+}
+.note { color: var(--amg-muted); font-size: 0.94rem; }
+
+/* Form */
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.form-grid label { font-weight: 600; color: var(--amg-dark); }
+.input, .textarea, .select {
+  width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid #d7e1ea;
+  outline: none; transition: box-shadow .2s, border-color .2s; background: #fff;
+}
+.input:focus, .textarea:focus, .select:focus {
+  border-color: var(--amg-teal);
+  box-shadow: 0 0 0 4px rgba(45,218,199,0.18);
+}
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 16px; border-radius: 12px; border: 0; cursor: pointer; font-weight: 600; }
+.btn-primary {
+  color: #032430;
+  background: linear-gradient(180deg, var(--amg-teal) 0%, var(--amg-teal-700) 100%);
+  box-shadow: 0 10px 24px rgba(45,218,199,0.35);
+}
+.btn-primary:hover { filter: brightness(1.05); }
+.btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+
+/* Status */
+.status { display:flex; align-items:center; gap:10px; padding: 12px; border-radius: 12px; }
+.status.success { background: #e9f9f6; color: #0b6b59; }
+.status.error { background: #fdecec; color: #8a1c1c; }
+.status.warn { background: #fff9e6; color: #7a5b00; }
+
+/* Footer */
+.amg-footer { color: #e0eef6; opacity: 0.85; padding: 18px 20px; text-align: center; }
+
+/* Utility */
+.stack-8 > * + * { margin-top: 8px; }
+.stack-12 > * + * { margin-top: 12px; }
+.center { display: grid; place-items: center; }
