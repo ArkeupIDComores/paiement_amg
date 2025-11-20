@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openimis_be_amg_payment"
+version = "0.1.0"
+description = "openIMIS Backend module for AMG payment via HOLO/TagPay"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "AMG Dev", email = "dev@amg.km" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Framework :: Django",
+]
+
+[tool.setuptools.packages.find]
+include = ["amg_payment*"]

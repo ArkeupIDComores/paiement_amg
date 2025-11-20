@@ -1,0 +1,1 @@
+# AMG Payment module for openIMIS backend
