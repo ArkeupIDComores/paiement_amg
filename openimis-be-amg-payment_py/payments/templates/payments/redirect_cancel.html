@@ -1,0 +1,7 @@
+{% extends 'payments/base.html' %}
+{% block title %}Paiement annulé{% endblock %}
+{% block heading %}Paiement annulé sur HOLO{% endblock %}
+{% block content %}
+  <p>Vous avez annulé la tentative de paiement. Aucune transaction n’a été réalisée.</p>
+  <p><a class="btn" href="{% url 'initier_paiement' %}">Relancer un paiement</a></p>
+{% endblock %}

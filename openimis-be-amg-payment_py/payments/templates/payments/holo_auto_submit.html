@@ -1,0 +1,38 @@
+{% extends 'payments/base.html' %}
+{% block title %}Redirection vers HOLO{% endblock %}
+{% block heading %}Préparation de la transaction HOLO{% endblock %}
+{% block content %}
+  {% if session_error %}
+    <div class="status status-error">{{ session_error }}</div>
+    <p>Veuillez réessayer plus tard.</p>
+  {% else %}
+    <div class="status status-info">Session créée. Redirection vers HOLO en cours…</div>
+    <form id="holoForm" method="post" action="{{ action_url }}">
+      <input type="hidden" name="sessionid" value="{{ sessionid }}" />
+      <input type="hidden" name="merchantid" value="{{ merchantid }}" />
+      <input type="hidden" name="amount" value="{{ amount }}" />
+      <input type="hidden" name="currency" value="{{ currency }}" />
+      <input type="hidden" name="purchaseref" value="{{ purchaseref }}" />
+      <input type="hidden" name="description" value="{{ description }}" />
+      <input type="hidden" name="accepturl" value="{{ acceptUrl }}" />
+      <input type="hidden" name="declineurl" value="{{ declineUrl }}" />
+      <input type="hidden" name="cancelurl" value="{{ cancelUrl }}" />
+      {% if not auto_submit %}
+        <noscript>
+          <p>JavaScript est désactivé. Cliquez pour continuer.</p>
+        </noscript>
+        <button class="btn" type="submit">Procéder au paiement HOLO</button>
+      {% endif %}
+    </form>
+  {% endif %}
+{% endblock %}
+{% block body_extra %}
+  {% if not session_error and auto_submit %}
+  <script>
+    window.addEventListener('DOMContentLoaded', function(){
+      var f = document.getElementById('holoForm');
+      if (f) { f.submit(); }
+    });
+  </script>
+  {% endif %}
+{% endblock %}

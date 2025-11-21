@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}AMG – Paiement HOLO{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="{% static 'payments/css/amg.css' %}" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;" />
+  {% block head_extra %}{% endblock %}
+  <style>/* basic fallback if static not collected */ .amg-header{background:#0a4f78;color:#fff}</style>
+</head>
+<body>
+  <header class="amg-header">
+    <div class="amg-header-inner">
+      <div class="amg-logo-wrap">
+        <img src="{% static 'payments/images/logo.svg' %}" alt="AMG" class="amg-logo-img" />
+      </div>
+      <div class="amg-brand">
+        <span class="title">AMG</span>
+        <span class="subtitle">Assurance Maladie Généralisée des Comores</span>
+      </div>
+      <div style="flex:1"></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <div class="card-header">
+        <h1>{% block heading %}Paiement HOLO{% endblock %}</h1>
+      </div>
+      <div class="accent"></div>
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="amg-footer">
+    <small>© AMG — Flux de paiement HOLO de démonstration. Sécurisé et conforme.</small>
+  </footer>
+
+  {% block body_extra %}{% endblock %}
+</body>
+</html>
