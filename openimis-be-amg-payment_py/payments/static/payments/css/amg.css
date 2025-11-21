@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+:root {
+  --amg-blue: #0a4f78;
+  --amg-light: #f6f8fa;
+  --amg-accent: #2fb57d;
+  --text: #1f2937;
+  --muted: #64748b;
+  --danger: #dc2626;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, sans-serif; color: var(--text); background: var(--amg-light); }
+
+.amg-header { background: var(--amg-blue); color: #fff; }
+.amg-header-inner { max-width: 960px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+.amg-logo-img { width: 40px; height: 40px; display: block; }
+.amg-brand .title { display: block; font-weight: 600; letter-spacing: 0.2px; }
+.amg-brand .subtitle { display: block; font-size: 12px; opacity: 0.85; }
+
+.container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); overflow: hidden; }
+.card-header { padding: 16px 20px; }
+.accent { height: 3px; background: linear-gradient(90deg, var(--amg-blue), var(--amg-accent)); }
+.card > .content { padding: 20px; }
+
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 20px; }
+.input { width: 100%; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; }
+.input[readonly] { background: #f3f4f6; color: var(--muted); }
+
+.btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #e5e7eb; background: #fff; color: var(--text); padding: 10px 14px; border-radius: 8px; text-decoration: none; }
+.btn-primary { background: var(--amg-blue); border-color: var(--amg-blue); color: #fff; }
+
+.status { margin: 16px 20px; padding: 12px 14px; border-radius: 8px; border: 1px dashed #cbd5e1; background: #fff; }
+.status-info { border-color: var(--amg-blue); }
+.status-error { border-color: var(--danger); color: var(--danger); }
+.status.success { border-color: var(--amg-accent); color: #065f46; background: #ecfdf5; }
+.status.warn { border-color: #f59e0b; color: #b45309; background: #fffbeb; }
+
+.note { color: var(--muted); font-size: 14px; margin: 0 20px; }
+
+.amg-footer { text-align: center; color: var(--muted); font-size: 12px; padding: 16px; }
+
+.stack-12 { display: grid; gap: 12px; }

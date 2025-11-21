@@ -1,0 +1,7 @@
+{% extends 'payments/base.html' %}
+{% block title %}Paiement accepté{% endblock %}
+{% block heading %}Paiement accepté sur HOLO{% endblock %}
+{% block content %}
+  <p>Votre tentative de paiement a été acceptée par HOLO. Ceci n’est pas une preuve de paiement; la confirmation finale dépend de la notification de HOLO.</p>
+  <p><a class="btn" href="{% url 'initier_paiement' %}">Revenir à l’initiation de paiement</a></p>
+{% endblock %}
