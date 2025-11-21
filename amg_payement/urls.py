@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+app_name = 'amg_payement'
+
+
 urlpatterns = [
     path('payments/initier-paiement', views.initier_paiement, name='initier_paiement'),
     # Anciens chemins (compatibilité)

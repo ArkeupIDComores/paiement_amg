@@ -2,7 +2,7 @@ import json
 import logging
 import requests
 from datetime import datetime
-from django.conf import settings
+# from django.conf import settings
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -11,6 +11,23 @@ from .models import Payment
 from .utils import verify_signature, is_ip_whitelisted
 
 logger = logging.getLogger(__name__)
+
+
+from core.models import ModuleConfiguration
+from django.apps import apps
+from .apps import DEFAULT_CONFIG, MODULE_NAME
+
+cfg = ModuleConfiguration.get_or_default(MODULE_NAME,DEFAULT_CONFIG)
+
+HOLO_BASE_URL = cfg["HOLO_BASE_URL"]
+HOLO_MERCHANT_ID = cfg["HOLO_MERCHANT_ID"]
+HOLO_CURRENCY = cfg["HOLO_CURRENCY"]
+HOLO_ONLINE_ENDPOINT = cfg["HOLO_ONLINE_ENDPOINT"]
+HOLO_FORCE_MANUAL = cfg["HOLO_FORCE_MANUAL"]
+NOTIFY_URL = cfg["NOTIFY_URL"]
+ACCEPT_URL = cfg["ACCEPT_URL"]
+DECLINE_URL = cfg["DECLINE_URL"]
+CANCEL_URL = cfg["CANCEL_URL"]
 
 
 @require_http_methods(["GET", "POST"])
@@ -49,15 +66,15 @@ def initier_paiement(request):
         beneficiary_id=beneficiary_id,
         amount=amount,
         description=description,
-        currency=settings.HOLO_CURRENCY,
-        merchantid=settings.HOLO_MERCHANT_ID,
+        currency=HOLO_CURRENCY,
+        merchantid=HOLO_MERCHANT_ID,
         status="initiating",
     )
 
     # Call HOLO to get sessionid
     session_error = ""
     try:
-        holo_url = f"{settings.HOLO_BASE_URL}{settings.HOLO_ONLINE_ENDPOINT}?merchantid={settings.HOLO_MERCHANT_ID}"
+        holo_url = f"{HOLO_BASE_URL}{HOLO_ONLINE_ENDPOINT}?merchantid={HOLO_MERCHANT_ID}"
         resp = requests.get(holo_url, timeout=10)
         resp.raise_for_status()
         session_raw = resp.text.strip()
@@ -78,17 +95,17 @@ def initier_paiement(request):
     payment.save()
 
     form_ctx = {
-        "action_url": f"{settings.HOLO_BASE_URL}{settings.HOLO_ONLINE_ENDPOINT}",
+        "action_url": f"{HOLO_BASE_URL}{HOLO_ONLINE_ENDPOINT}",
         "sessionid": sessionid,
-        "merchantid": settings.HOLO_MERCHANT_ID,
+        "merchantid": HOLO_MERCHANT_ID,
         "amount": amount,
-        "currency": settings.HOLO_CURRENCY,
+        "currency": HOLO_CURRENCY,
         "purchaseref": purchaseref,
         "description": description,
-        "acceptUrl": settings.ACCEPT_URL,
-        "declineUrl": settings.DECLINE_URL,
-        "cancelUrl": settings.CANCEL_URL,
-        "auto_submit": (not settings.HOLO_FORCE_MANUAL) and ("holourl" not in settings.HOLO_BASE_URL.lower()) and bool(sessionid),
+        "acceptUrl": ACCEPT_URL,
+        "declineUrl": DECLINE_URL,
+        "cancelUrl": CANCEL_URL,
+        "auto_submit": (not HOLO_FORCE_MANUAL) and ("holourl" not in HOLO_BASE_URL.lower()) and bool(sessionid),
         "session_error": session_error,
     }
 
@@ -119,14 +136,14 @@ def api_initiate(request):
         beneficiary_id=beneficiary_id,
         amount=amount,
         description=description,
-        currency=settings.HOLO_CURRENCY,
-        merchantid=settings.HOLO_MERCHANT_ID,
+        currency=HOLO_CURRENCY,
+        merchantid=HOLO_MERCHANT_ID,
         status="initiating",
     )
 
     session_error = ""
     try:
-        holo_url = f"{settings.HOLO_BASE_URL}{settings.HOLO_ONLINE_ENDPOINT}?merchantid={settings.HOLO_MERCHANT_ID}"
+        holo_url = f"{HOLO_BASE_URL}{HOLO_ONLINE_ENDPOINT}?merchantid={HOLO_MERCHANT_ID}"
         resp = requests.get(holo_url, timeout=10)
         resp.raise_for_status()
         session_raw = resp.text.strip()
@@ -147,19 +164,19 @@ def api_initiate(request):
 
     redirect_form_data = {
         "sessionid": sessionid,
-        "merchantid": settings.HOLO_MERCHANT_ID,
+        "merchantid": HOLO_MERCHANT_ID,
         "amount": amount,
-        "currency": settings.HOLO_CURRENCY,
+        "currency": HOLO_CURRENCY,
         "purchaseref": purchaseref,
         "description": description,
-        "accepturl": settings.ACCEPT_URL,
-        "declineurl": settings.DECLINE_URL,
-        "cancelurl": settings.CANCEL_URL,
+        "accepturl": ACCEPT_URL,
+        "declineurl": DECLINE_URL,
+        "cancelurl": CANCEL_URL,
     }
 
     return JsonResponse({
         "sessionid": sessionid,
-        "merchantid": settings.HOLO_MERCHANT_ID,
+        "merchantid": HOLO_MERCHANT_ID,
         "purchaseref": purchaseref,
         "redirect_form_data": redirect_form_data,
         "session_error": session_error,
@@ -213,7 +230,7 @@ def api_notify(request):
         return HttpResponseBadRequest("purchaseref inconnu")
 
     # Validate merchant and amount
-    if merchantid != settings.HOLO_MERCHANT_ID:
+    if merchantid != HOLO_MERCHANT_ID:
         return HttpResponseForbidden("MerchantID invalide")
     if amount_paid != payment.amount:
         logger.warning("Montant payé ne correspond pas")
@@ -242,7 +259,7 @@ def api_notify(request):
 
     # Double journalisation (append JSON line)
     try:
-        with open(settings.BASE_DIR / 'journal_notify.log', 'a', encoding='utf-8') as f:
+        with open(BASE_DIR / 'journal_notify.log', 'a', encoding='utf-8') as f:
             f.write(json.dumps(payload) + "\n")
     except Exception as e:
         logger.error(f"Journalisation notify échouée: {e}")

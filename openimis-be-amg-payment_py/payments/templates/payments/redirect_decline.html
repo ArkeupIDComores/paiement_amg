@@ -1,7 +1,0 @@
-{% extends 'payments/base.html' %}
-{% block title %}Paiement refusé{% endblock %}
-{% block heading %}Paiement refusé sur HOLO{% endblock %}
-{% block content %}
-  <p>Le paiement a été refusé sur HOLO. Aucune transaction n’a été réalisée.</p>
-  <p><a class="btn" href="{% url 'initier_paiement' %}">Réessayer le paiement</a></p>
-{% endblock %}
